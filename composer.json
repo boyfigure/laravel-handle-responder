@@ -1,0 +1,28 @@
+{
+    "name": "offspring/laravel-handle-responder",
+    "description": "A Laravel package for building API responses",
+    "keywords": ["api", "responder", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tony",
+            "email": "tony@offspringdigital.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Offspring\\Responder\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Offspring\\Responder\\ResponderServiceProvider"
+            ]
+        }
+    }
+}
