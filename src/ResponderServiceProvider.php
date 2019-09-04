@@ -26,7 +26,7 @@ class ResponderServiceProvider extends ServiceProvider
     {
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/responder.php',
+            __DIR__ . '/../config/responder.php',
             'responder'
         );
     }
