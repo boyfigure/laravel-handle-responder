@@ -16,7 +16,10 @@
     "autoload": {
         "psr-4": {
             "Offspring\\Responder\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {

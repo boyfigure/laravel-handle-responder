@@ -3,6 +3,7 @@
 namespace Offspring\Responder;
 
 use Illuminate\Support\ServiceProvider;
+use Offspring\Responder\Contracts\Responder as ResponderContract;
 
 class ResponderServiceProvider extends ServiceProvider
 {
@@ -24,7 +25,7 @@ class ResponderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->registerServiceBindings();
         $this->mergeConfigFrom(
             __DIR__ . '/../config/responder.php',
             'responder'
@@ -42,5 +43,17 @@ class ResponderServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../resources/lang/en/errors.php' => base_path('resources/lang/en/errors.php'),
         ], 'lang');
+    }
+
+    /**
+     * Register service bindings.
+     *
+     * @return void
+     */
+    protected function registerServiceBindings()
+    {
+        $this->app->singleton(ResponderContract::class, function ($app) {
+            return $app->make(Responder::class);
+        });
     }
 }
