@@ -3,24 +3,59 @@
 namespace Offspring\Responder;
 
 use Offspring\Responder\Contracts\Responder as ResponderContract;
-use Flugg\Responder\Http\Responses\ErrorResponseBuilder;
-use Flugg\Responder\Http\Responses\SuccessResponseBuilder;
+use Offspring\Responder\Http\Responses\ErrorResponseBuilder;
+use Offspring\Responder\Http\Responses\SuccessResponseBuilder;
 
 
 class Responder implements ResponderContract
 {
-    public function __construct()
+    /**
+     * A builder for building success responses.
+     *
+     * @var \Offspring\Responder\Http\Responses\SuccessResponseBuilder
+     */
+    protected $successResponseBuilder;
+
+    /**
+     * A builder for building error responses.
+     *
+     * @var \Offspring\Responder\Http\Responses\ErrorResponseBuilder
+     */
+    protected $errorResponseBuilder;
+
+    /**
+     * Construct the service class.
+     *
+     * @param \Offspring\Responder\Http\Responses\SuccessResponseBuilder $successResponseBuilder
+     * @param \Offspring\Responder\Http\Responses\ErrorResponseBuilder   $errorResponseBuilder
+     */
+    public function __construct(SuccessResponseBuilder $successResponseBuilder, ErrorResponseBuilder $errorResponseBuilder)
     {
-        
+        $this->successResponseBuilder = $successResponseBuilder;
+        $this->errorResponseBuilder = $errorResponseBuilder;
     }
 
-    public function success($data = null)
+    /**
+     * Build a successful response.
+     *
+     * @param  mixed                                                          $data
+     * @param  string|null                                                    $resourceKey
+     * @return \Offspring\Responder\Http\Responses\SuccessResponseBuilder
+     */
+    public function success($data = null): SuccessResponseBuilder
     {
-        return 'ssssss';
+        return $this->successResponseBuilder;
     }
 
-    public function error($errorCode = null, string $message = null)
+    /**
+     * Build an error response.
+     *
+     * @param  mixed|null  $errorCode
+     * @param  string|null $message
+     * @return \Offspring\Responder\Http\Responses\ErrorResponseBuilder
+     */
+    public function error($errorCode = null, string $message = null): ErrorResponseBuilder
     {
-        return 'eee';
+        return $this->errorResponseBuilder->error($errorCode, $message);
     }
 }
