@@ -12,6 +12,9 @@ use Offspring\Responder\Contracts\ErrorFactory as ErrorFactoryContract;
 use Offspring\Responder\Http\Responses\ErrorResponseBuilder;
 use Offspring\Responder\Contracts\ErrorSerializer as ErrorSerializerContract;
 
+use Offspring\Responder\Contracts\SuccessSerializer as SuccessSerializerContract;
+use Offspring\Responder\Http\Responses\SuccessResponseBuilder;
+
 class ResponderServiceProvider extends ServiceProvider
 {
     /**
@@ -37,7 +40,7 @@ class ResponderServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerResponseFactory();
-        $this->registerSerializerBindings();
+        $this->registerSuccessBindings();
         $this->registerServiceBindings();
         $this->registerErrorBindings();
 
@@ -95,24 +98,28 @@ class ResponderServiceProvider extends ServiceProvider
             return $app->make(ErrorFactory::class);
         });
 
+        $this->app->bind(ErrorSerializerContract::class, function ($app) {
+            return $app->make($app->config['responder.serializers.error']);
+        });
+
         $this->app->bind(ErrorResponseBuilder::class, function ($app) {
             return (new ErrorResponseBuilder($app->make(ResponseFactoryContract::class), $app->make(ErrorFactoryContract::class)))->serializer($app->make(ErrorSerializerContract::class));
         });
     }
 
-    /**
-     * Register serializer bindings.
-     *
-     * @return void
-     */
-    protected function registerSerializerBindings()
+    protected function registerSuccessBindings()
     {
-        $this->app->bind(ErrorSerializerContract::class, function ($app) {
-            return $app->make($app->config['responder.serializers.error']);
+
+        $this->app->singleton(SuccessFactoryContract::class, function ($app) {
+            return $app->make(SuccessFactory::class);
         });
 
-//        $this->app->bind(SerializerAbstract::class, function ($app) {
-//            return $app->make($app->config['responder.serializers.success']);
-//        });
+        $this->app->bind(SuccessSerializerContract::class, function ($app) {
+            return $app->make($app->config['responder.serializers.success']);
+        });
+
+        $this->app->bind(SuccessResponseBuilder::class, function ($app) {
+            return (new SuccessResponseBuilder($app->make(ResponseFactoryContract::class), $app->make(SuccessFactoryContract::class)))->serializer($app->make(SuccessSerializerContract::class));
+        });
     }
 }

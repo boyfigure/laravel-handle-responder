@@ -48,7 +48,6 @@ abstract class ResponseBuilder implements Arrayable, Jsonable
         if (! is_null($status)) {
             $this->setStatusCode($status);
         }
-        dd($this->toCollection());
 
         return $this->responseFactory->make($this->getOutput(), $this->status, $headers);
     }
