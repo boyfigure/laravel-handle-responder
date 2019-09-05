@@ -40,12 +40,12 @@ class ErrorFactory implements ErrorFactoryContract
     {
 
         if (isset($errorSlug) && (!isset($errorCode) || !isset($message))) {
-            $data = $this->messageResolver->resolve($errorSlug);
-            if (!isset($message) && isset($data['message'])) {
-                $message = $data['message'];
+            $errorData = $this->messageResolver->resolve($errorSlug);
+            if (!isset($message) && isset($errorData['message'])) {
+                $message = $errorData['message'];
             }
-            if (!isset($errorCode) && isset($data['code'])) {
-                $errorCode = $data['code'];
+            if (!isset($errorCode) && isset($errorData['code'])) {
+                $errorCode = $errorData['code'];
             }
         }
         return $serializer->format($errorSlug, $errorCode, $message, $data);
