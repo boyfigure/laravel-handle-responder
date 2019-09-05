@@ -35,14 +35,14 @@ class ErrorMessageResolver implements ErrorMessageResolverContract
     /**
      * Register a message mapped to an error code.
      *
-     * @param  mixed  $errorCode
+     * @param  mixed  $errorSlug
      * @param  string $message
      * @return void
      */
-    public function register($errorCode, string $message)
+    public function register($errorSlug, string $message)
     {
-        $this->messages = array_merge($this->messages, is_array($errorCode) ? $errorCode : [
-            $errorCode => $message,
+        $this->messages = array_merge($this->messages, is_array($errorSlug) ? $errorSlug : [
+            $errorSlug => $message,
         ]);
     }
 
@@ -52,14 +52,14 @@ class ErrorMessageResolver implements ErrorMessageResolverContract
      * @param  mixed $errorCode
      * @return string|null
      */
-    public function resolve($errorCode)
+    public function resolve($errorSlug)
     {
-        if (key_exists($errorCode, $this->messages)) {
-            return $this->messages[$errorCode];
+        if (key_exists($errorSlug, $this->messages)) {
+            return $this->messages[$errorSlug];
         }
 
-        if ($this->translator->has($errorCode = "errors.$errorCode")) {
-            return $this->translator->trans($errorCode);
+        if ($this->translator->has($errorSlug = "errors.$errorSlug")) {
+            return $this->translator->trans($errorSlug);
         }
 
         return null;

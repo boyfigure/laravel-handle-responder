@@ -27,7 +27,7 @@ class Responder implements ResponderContract
      * Construct the service class.
      *
      * @param \Offspring\Responder\Http\Responses\SuccessResponseBuilder $successResponseBuilder
-     * @param \Offspring\Responder\Http\Responses\ErrorResponseBuilder   $errorResponseBuilder
+     * @param \Offspring\Responder\Http\Responses\ErrorResponseBuilder $errorResponseBuilder
      */
     public function __construct(SuccessResponseBuilder $successResponseBuilder, ErrorResponseBuilder $errorResponseBuilder)
     {
@@ -38,7 +38,7 @@ class Responder implements ResponderContract
     /**
      * Build a successful response.
      *
-     * @param  mixed                                                          $data
+     * @param mixed $data
      * @return \Offspring\Responder\Http\Responses\SuccessResponseBuilder
      */
     public function success($data = null): SuccessResponseBuilder
@@ -48,13 +48,13 @@ class Responder implements ResponderContract
 
     /**
      * Build an error response.
-     *
-     * @param  mixed|null  $errorCode
-     * @param  string|null $message
+     * @param mixed|null $errorSlug
+     * @param mixed|null $errorCode
+     * @param string|null $message
      * @return \Offspring\Responder\Http\Responses\ErrorResponseBuilder
      */
-    public function error($errorCode = null, string $message = null): ErrorResponseBuilder
+    public function error($errorSlug = null, $errorCode = null, string $message = null): ErrorResponseBuilder
     {
-        return $this->errorResponseBuilder->error($errorCode, $message);
+        return $this->errorResponseBuilder->error($errorSlug, $errorCode, $message);
     }
 }

@@ -33,6 +33,13 @@ class ErrorResponseBuilder extends ResponseBuilder
     protected $errorCode = null;
 
     /**
+     * A slug representing the error.
+     *
+     * @var string|null
+     */
+    protected $errorSlug = null;
+
+    /**
      * A message descibing the error.
      *
      * @var string|null
@@ -57,7 +64,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      * Construct the builder class.
      *
      * @param \Offspring\Responder\Contracts\ResponseFactory $responseFactory
-     * @param \Offspring\Responder\Contracts\ErrorFactory    $errorFactory
+     * @param \Offspring\Responder\Contracts\ErrorFactory $errorFactory
      */
     public function __construct(ResponseFactory $responseFactory, ErrorFactory $errorFactory)
     {
@@ -69,12 +76,14 @@ class ErrorResponseBuilder extends ResponseBuilder
     /**
      * Set the error code and message.
      *
-     * @param  mixed|null  $errorCode
-     * @param  string|null $message
+     * @param mixed|null $errorSlug
+     * @param mixed|null $errorCode
+     * @param string|null $message
      * @return $this
      */
-    public function error($errorCode = null, string $message = null)
+    public function error($errorSlug = null, $errorCode = null, string $message = null)
     {
+        $this->errorSlug = $errorSlug;
         $this->errorCode = $errorCode;
         $this->message = $message;
 
@@ -84,12 +93,12 @@ class ErrorResponseBuilder extends ResponseBuilder
     /**
      * Add additional data to the error.
      *
-     * @param  array|null $data
+     * @param array|null $data
      * @return $this
      */
     public function data(array $data = null)
     {
-        $this->data = array_merge((array) $this->data, (array) $data);
+        $this->data = array_merge((array)$this->data, (array)$data);
 
         return $this;
     }
@@ -97,7 +106,7 @@ class ErrorResponseBuilder extends ResponseBuilder
     /**
      * Set the error serializer.
      *
-     * @param  \Offspring\Responder\Contracts\ErrorSerializer|string $serializer
+     * @param \Offspring\Responder\Contracts\ErrorSerializer|string $serializer
      * @return $this
      * @throws \Offspring\Responder\Exceptions\InvalidErrorSerializerException
      */
@@ -107,7 +116,7 @@ class ErrorResponseBuilder extends ResponseBuilder
             $serializer = new $serializer;
         }
 
-        if (! $serializer instanceof ErrorSerializer) {
+        if (!$serializer instanceof ErrorSerializer) {
             throw new InvalidErrorSerializerException;
         }
 
@@ -123,13 +132,13 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected function getOutput(): array
     {
-        return $this->errorFactory->make($this->serializer, $this->errorCode, $this->message, $this->data);
+        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data);
     }
 
     /**
      * Validate the HTTP status code for the response.
      *
-     * @param  int $status
+     * @param int $status
      * @return void
      * @throws \InvalidArgumentException
      */

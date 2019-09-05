@@ -29,17 +29,25 @@ class ErrorFactory implements ErrorFactoryContract
     /**
      * Make an error array from the given error code and message.
      *
-     * @param  \Offspring\Responder\Contracts\ErrorSerializer $serializer
-     * @param  mixed|null                                 $errorCode
-     * @param  string|null                                $message
-     * @param  array|null                                 $data
+     * @param \Offspring\Responder\Contracts\ErrorSerializer $serializer
+     * @param mixed|null $errorSlug
+     * @param mixed|null $errorCode
+     * @param string|null $message
+     * @param array|null $data
      * @return array
      */
-    public function make(ErrorSerializer $serializer, $errorCode = null, string $message = null, array $data = null): array
+    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, string $message = null, array $data = null): array
     {
-        if (isset($errorCode) && ! isset($message)) {
-            $message = $this->messageResolver->resolve($errorCode);
+
+        if (isset($errorSlug) && (!isset($errorCode) || !isset($message))) {
+            $data = $this->messageResolver->resolve($errorSlug);
+            if (!isset($message) && isset($data['message'])) {
+                $message = $data['message'];
+            }
+            if (!isset($errorCode) && isset($data['code'])) {
+                $errorCode = $data['code'];
+            }
         }
-        return $serializer->format($errorCode, $message, $data);
+        return $serializer->format($errorSlug, $errorCode, $message, $data);
     }
 }
