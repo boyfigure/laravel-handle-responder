@@ -30,8 +30,7 @@ return [
     */
 
     'decorators' => [
-        \Offspring\Responder\Http\Responses\Decorators\StatusCodeDecorator::class,
-        \Offspring\Responder\Http\Responses\Decorators\SuccessFlagDecorator::class,
+        \Offspring\Responder\Http\Responses\Decorators\PrettyPrintDecorator::class
     ],
 
     /*

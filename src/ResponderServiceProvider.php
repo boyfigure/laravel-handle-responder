@@ -5,6 +5,7 @@ namespace Offspring\Responder;
 use Illuminate\Support\ServiceProvider;
 use Offspring\Responder\Contracts\Responder as ResponderContract;
 use Offspring\Responder\Contracts\ResponseFactory as ResponseFactoryContract;
+use Offspring\Responder\Contracts\ResponseFactory;
 use Offspring\Responder\Http\Responses\Factories\LaravelResponseFactory;
 
 use Offspring\Responder\Contracts\ErrorMessageResolver as ErrorMessageResolverContract;
@@ -79,8 +80,18 @@ class ResponderServiceProvider extends ServiceProvider
     protected function registerResponseFactory()
     {
         $this->app->singleton(ResponseFactoryContract::class, function ($app) {
-            return $app->make(LaravelResponseFactory::class);
+            return $this->decorateResponseFactory($app->make(LaravelResponseFactory::class));
         });
+    }
+
+
+    protected function decorateResponseFactory(ResponseFactoryContract $factory): ResponseFactory
+    {
+        foreach ($this->app->config['responder.decorators'] as $decorator) {
+            $factory = new $decorator($factory);
+        };
+
+        return $factory;
     }
 
     /**
