@@ -52,17 +52,20 @@ class SuccessResponseBuilder extends ResponseBuilder
         $this->successFactory = $successFactory;
         parent::__construct($responseFactory);
     }
-    
 
+    public function success($data=null)
+    {
+        $this->data = $data;
+        return $this;
+    }
     /**
      * Add additional data to the error.
      *
-     * @param array|null $data
      * @return $this
      */
-    public function data(array $data = null)
+    public function data($data = null)
     {
-        $this->data = array_merge((array)$this->data, (array)$data);
+        $this->data = $data;
 
         return $this;
     }

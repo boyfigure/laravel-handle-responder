@@ -6,7 +6,7 @@ use Offspring\Responder\Contracts\SuccessSerializer as SuccessSerializerContract
 
 class SuccessSerializer implements SuccessSerializerContract
 {
-    public function format(array $data = null): array
+    public function format($data = null): array
     {
         $response = [
             'data' => $data,

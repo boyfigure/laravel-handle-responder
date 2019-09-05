@@ -23,10 +23,10 @@ class SuccessFactory implements SuccessFactoryContract
      * Make an error array from the given error code and message.
      *
      * @param  \Offspring\Responder\Contracts\SuccessSerializer $serializer
-     * @param  array|null                                 $data
+     * @param   $data
      * @return array
      */
-    public function make(SuccessSerializer $serializer, array $data = null): array
+    public function make(SuccessSerializer $serializer, $data = null): array
     {
         return $serializer->format($data);
     }

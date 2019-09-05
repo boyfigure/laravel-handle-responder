@@ -40,7 +40,6 @@ class ErrorFactory implements ErrorFactoryContract
         if (isset($errorCode) && ! isset($message)) {
             $message = $this->messageResolver->resolve($errorCode);
         }
-
         return $serializer->format($errorCode, $message, $data);
     }
 }

@@ -8,8 +8,8 @@ interface SuccessSerializer
     /**
      * Format the error data.
      *
-     * @param  array|null  $data
+     * @param   $data
      * @return array
      */
-    public function format(array $data = null): array;
+    public function format($data = null): array;
 }

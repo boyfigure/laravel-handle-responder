@@ -14,6 +14,7 @@ use Offspring\Responder\Http\Responses\ErrorResponseBuilder;
 use Offspring\Responder\Contracts\ErrorSerializer as ErrorSerializerContract;
 
 use Offspring\Responder\Contracts\SuccessSerializer as SuccessSerializerContract;
+use Offspring\Responder\Contracts\SuccessFactory as SuccessFactoryContract;
 use Offspring\Responder\Http\Responses\SuccessResponseBuilder;
 
 class ResponderServiceProvider extends ServiceProvider

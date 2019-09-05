@@ -39,12 +39,11 @@ class Responder implements ResponderContract
      * Build a successful response.
      *
      * @param  mixed                                                          $data
-     * @param  string|null                                                    $resourceKey
      * @return \Offspring\Responder\Http\Responses\SuccessResponseBuilder
      */
     public function success($data = null): SuccessResponseBuilder
     {
-        return $this->successResponseBuilder;
+        return $this->successResponseBuilder->success($data);
     }
 
     /**
