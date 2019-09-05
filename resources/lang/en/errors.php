@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'unauthenticated' => 'You are not authenticated for this request.',
-    'unauthorized' => 'You are not authorized for this request.',
-    'page_not_found' => 'The requested page does not exist.',
-    'relation_not_found' => 'The requested relation does not exist.',
-    'validation_failed' => 'The given data failed to pass validation.',
+    'unauthenticated' => ['code'=>10001,'message'=>'You are not authenticated for this request.'],
+    'unauthorized' => ['code'=>10002,'message'=>'You are not authorized for this request.'],
+    'page_not_found' => ['code'=>10003,'message'=>'The requested page does not exist.'],
+    'relation_not_found' => ['code'=>10004,'message'=>'The requested relation does not exist.'],
+    'validation_failed' => ['code'=>10005,'message'=>'The given data failed to pass validation.'],
 
 ];
