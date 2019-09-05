@@ -39,7 +39,7 @@ class ErrorMessageResolver implements ErrorMessageResolverContract
      * @param  string $message
      * @return void
      */
-    public function register($errorSlug, string $message)
+    public function register($errorSlug, $message)
     {
         $this->messages = array_merge($this->messages, is_array($errorSlug) ? $errorSlug : [
             $errorSlug => $message,

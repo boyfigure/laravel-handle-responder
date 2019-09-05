@@ -17,7 +17,7 @@ class ErrorSerializer implements ErrorSerializerContract
      * @return array
      */
 
-    public function format($errorSlug = null, $errorCode = null, string $message = null, array $data = null): array
+    public function format($errorSlug = null, $errorCode = null, $message = null, array $data = null): array
     {
         $response = [
 //            'slug' => $errorSlug,

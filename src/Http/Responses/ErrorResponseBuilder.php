@@ -42,7 +42,7 @@ class ErrorResponseBuilder extends ResponseBuilder
     /**
      * A message descibing the error.
      *
-     * @var string|null
+     * @var mixed|null
      */
     protected $message = null;
 
@@ -58,7 +58,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      *
      * @var int
      */
-    protected $status = 500;
+    protected $status = 400;
 
     /**
      * Construct the builder class.
@@ -81,7 +81,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      * @param string|null $message
      * @return $this
      */
-    public function error($errorSlug = null, $errorCode = null, string $message = null)
+    public function error($errorSlug = null, $errorCode = null, $message = null)
     {
         $this->errorSlug = $errorSlug;
         $this->errorCode = $errorCode;

@@ -36,7 +36,7 @@ class ErrorFactory implements ErrorFactoryContract
      * @param array|null $data
      * @return array
      */
-    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, string $message = null, array $data = null): array
+    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, $message = null, array $data = null): array
     {
 
         if (isset($errorSlug) && (!isset($errorCode) || !isset($message))) {

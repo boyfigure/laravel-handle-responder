@@ -53,8 +53,29 @@ class Responder implements ResponderContract
      * @param string|null $message
      * @return \Offspring\Responder\Http\Responses\ErrorResponseBuilder
      */
-    public function error($errorSlug = null, $errorCode = null, string $message = null): ErrorResponseBuilder
+    public function error($errorSlug = null, $errorCode = null, $message = null): ErrorResponseBuilder
     {
+        //array to string
+        if (is_array($message)) {
+            $message = $this->implodeMessageBag($message);
+        }
+
         return $this->errorResponseBuilder->error($errorSlug, $errorCode, $message);
     }
+
+    protected function implodeMessageBag(array $messages = [])
+    {
+        $new_messages = [];
+        foreach ($messages as $field => $message) {
+            if (is_array($message) && count($message) > 0) {
+                $new_messages = $new_messages + $message;
+            } elseif (is_string($message)) {
+                $new_messages[] = $message;
+            }
+        }
+
+        return implode(', ', $new_messages);
+    }
+
+
 }
