@@ -57,9 +57,9 @@ abstract class ResponseBuilder implements Arrayable, Jsonable
      *
      * @return array
      */
-    public function toArray(): array
+    public function toArray(int $status = null): array
     {
-        return $this->respond()->getData(true);
+        return $this->respond($status)->getData(true);
     }
 
     /**
