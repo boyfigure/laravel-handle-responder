@@ -20,13 +20,16 @@ class ErrorSerializer implements ErrorSerializerContract
     public function format($errorSlug = null, $errorCode = null, $message = null, array $data = null): array
     {
         $response = [
-//            'slug' => $errorSlug,
             'error_code' => $errorCode,
-            'message' => $message,
-        ];
+            'data' => [
+                'message' => $message,
+//                'error_subcode' => null,
+//                'slug' => $errorSlug,
+            ],
 
+        ];
         if (is_array($data)) {
-            $response['data'] = $data;
+            $response['data'] = array_merge($response['data'], $data);
         }
 
         return $response;
