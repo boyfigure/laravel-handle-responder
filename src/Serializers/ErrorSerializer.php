@@ -20,8 +20,9 @@ class ErrorSerializer implements ErrorSerializerContract
     public function format($errorSlug = null, $errorCode = null, $message = null, array $data = null): array
     {
         $response = [
-            'error_code' => $errorCode,
+
             'data' => [
+                'error_code' => $errorCode,
                 'message' => $message,
 //                'error_subcode' => null,
 //                'slug' => $errorSlug,
