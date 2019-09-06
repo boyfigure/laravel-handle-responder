@@ -24,6 +24,7 @@ class ErrorSerializer implements ErrorSerializerContract
             'data' => [
                 'error_code' => $errorCode,
                 'message' => $message,
+                'error_trace_id' => null,
 //                'error_subcode' => null,
 //                'slug' => $errorSlug,
             ],
