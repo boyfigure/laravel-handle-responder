@@ -34,9 +34,10 @@ class ErrorFactory implements ErrorFactoryContract
      * @param mixed|null $errorCode
      * @param string|null $message
      * @param array|null $data
+     * @param mixed|null $traceId
      * @return array
      */
-    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, $message = null, array $data = null): array
+    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, $message = null, array $data = null, $traceId = null): array
     {
 
         if (isset($errorSlug) && (!isset($errorCode) || !isset($message))) {
@@ -48,6 +49,6 @@ class ErrorFactory implements ErrorFactoryContract
                 $errorCode = $errorData['code'];
             }
         }
-        return $serializer->format($errorSlug, $errorCode, $message, $data);
+        return $serializer->format($errorSlug, $errorCode, $message, $data, $traceId);
     }
 }

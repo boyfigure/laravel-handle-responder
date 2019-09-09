@@ -14,17 +14,17 @@ class ErrorSerializer implements ErrorSerializerContract
      * @param mixed|null $errorCode
      * @param string|null $message
      * @param array|null $data
+     * @param mixed|null $traceId
      * @return array
      */
 
-    public function format($errorSlug = null, $errorCode = null, $message = null, array $data = null): array
+    public function format($errorSlug = null, $errorCode = null, $message = null, array $data = null, $traceId = null): array
     {
         $response = [
-
             'data' => [
                 'error_code' => $errorCode,
                 'message' => $message,
-                'error_trace_id' => null,
+                'error_trace_id' => $traceId,
 //                'error_subcode' => null,
 //                'slug' => $errorSlug,
             ],

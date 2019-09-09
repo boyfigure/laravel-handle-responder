@@ -7,6 +7,7 @@ use Offspring\Responder\Contracts\ErrorSerializer;
 use Offspring\Responder\Contracts\ResponseFactory;
 use Offspring\Responder\Exceptions\InvalidErrorSerializerException;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\Log;
 
 
 class ErrorResponseBuilder extends ResponseBuilder
@@ -52,6 +53,13 @@ class ErrorResponseBuilder extends ResponseBuilder
      * @var array|null
      */
     protected $data = null;
+
+    /**
+     * Additional $traceId included with the error.
+     *
+     * @var mixed | null
+     */
+    protected $traceId = null;
 
     /**
      * A HTTP status code for the response.
@@ -103,6 +111,35 @@ class ErrorResponseBuilder extends ResponseBuilder
         return $this;
     }
 
+    public function log($exception)
+    {
+        $this->traceId = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, config('responder.length_error_tracking_id'));
+        if ($exception instanceof \Exception) {
+            $exception = [
+                'error_trace_id' => $this->traceId,
+                'data' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'system_error_code' => $exception->getCode(),
+                'trace' => $exception->getTraceAsString(),
+            ];
+        } elseif (is_object($exception)) {
+            $exception->error_trace_id = $this->traceId;
+
+        } elseif (is_array($exception)) {
+            $exception['error_trace_id'] = $this->traceId;
+
+        } else {
+            $exception = [
+                'error_trace_id' => $this->traceId,
+                'data' => $exception
+            ];
+        }
+        Log::debug($exception);
+
+        return $this;
+    }
+
     /**
      * Set the error serializer.
      *
@@ -132,7 +169,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected function getOutput(): array
     {
-        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data);
+        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId);
     }
 
     /**
