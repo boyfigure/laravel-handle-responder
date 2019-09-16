@@ -14,7 +14,8 @@ interface ErrorFactory
      * @param string|null $message
      * @param array|null $data
      * @param mixed|null $traceId
+     * @param mixed|null $exception
      * @return array
      */
-    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, $message = null, array $data = null, $traceId = null): array;
+    public function make(ErrorSerializer $serializer, $errorSlug = null, $errorCode = null, $message = null, array $data = null, $traceId = null,  $exception = null): array;
 }
