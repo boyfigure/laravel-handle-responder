@@ -69,6 +69,13 @@ class ErrorResponseBuilder extends ResponseBuilder
     protected $status = 400;
 
     /**
+     * Additional $exception included with the error.
+     *
+     * @var mixed | null
+     */
+    protected $exception = null;
+
+    /**
      * Construct the builder class.
      *
      * @param \Offspring\Responder\Contracts\ResponseFactory $responseFactory
@@ -115,28 +122,29 @@ class ErrorResponseBuilder extends ResponseBuilder
     {
         $this->traceId = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, config('responder.length_error_tracking_id'));
         if ($exception instanceof \Exception) {
-            $exception = [
-                'error_trace_id' => $this->traceId,
+            $this->exception = [
                 'data' => $exception->getMessage(),
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine(),
                 'system_error_code' => $exception->getCode(),
                 'trace' => $exception->getTraceAsString(),
             ];
-        } elseif (is_object($exception)) {
-            $exception->error_trace_id = $this->traceId;
-
-        } elseif (is_array($exception)) {
-            $exception['error_trace_id'] = $this->traceId;
-
         } else {
-            $exception = [
-                'error_trace_id' => $this->traceId,
-                'data' => $exception
+            $this->exception = [
+                'data' => $exception,
             ];
         }
-        Log::debug($exception);
+        return $this;
+    }
 
+    public function saveLog()
+    {
+        $this->exception['error_trace_id'] = $this->traceId;
+        $this->exception['error_code'] = $this->errorCode;
+        $this->exception['error_message'] = $this->message;
+        $this->exception['error_slug'] = $this->errorSlug;
+
+        Log::debug($this->exception);
         return $this;
     }
 
@@ -169,7 +177,12 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected function getOutput(): array
     {
-        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId);
+        $output = $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId);
+        //log
+        if (isset($this->traceId)) {
+            $this->saveLog();
+        }
+        return $output;
     }
 
     /**
