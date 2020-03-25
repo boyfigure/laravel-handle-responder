@@ -8,8 +8,9 @@ interface ErrorMessageResolver
     /**
      * Resolve a message from the given error code.
      *
-     * @param  mixed $errorCode
+     * @param mixed $errorSlug
+     * @param mixed $errorParameter
      * @return string|null
      */
-    public function resolve($errorCode);
+    public function resolve($errorSlug, $errorParameter);
 }

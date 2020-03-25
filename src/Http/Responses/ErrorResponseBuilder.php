@@ -75,6 +75,8 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected $exception = null;
 
+    protected $errorParameter = [];
+
     /**
      * Construct the builder class.
      *
@@ -94,14 +96,15 @@ class ErrorResponseBuilder extends ResponseBuilder
      * @param mixed|null $errorSlug
      * @param mixed|null $errorCode
      * @param string|null $message
+     * @param mixed|null $errorParameter
      * @return $this
      */
-    public function error($errorSlug = null, $errorCode = null, $message = null)
+    public function error($errorSlug = null, $errorCode = null, $message = null, $errorParameter =[])
     {
         $this->errorSlug = $errorSlug;
         $this->errorCode = $errorCode;
         $this->message = $message;
-
+        $this->errorParameter = $errorParameter;
         return $this;
     }
 
@@ -167,7 +170,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected function getOutput(): array
     {
-        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId, $this->exception);
+        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId, $this->exception,$this->errorParameter);
     }
 
     /**

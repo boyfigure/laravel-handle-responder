@@ -35,8 +35,8 @@ class ErrorMessageResolver implements ErrorMessageResolverContract
     /**
      * Register a message mapped to an error code.
      *
-     * @param  mixed  $errorSlug
-     * @param  string $message
+     * @param mixed $errorSlug
+     * @param string $message
      * @return void
      */
     public function register($errorSlug, $message)
@@ -49,17 +49,30 @@ class ErrorMessageResolver implements ErrorMessageResolverContract
     /**
      * Resolve a message from the given error code.
      *
-     * @param  mixed $errorCode
+     * @param mixed $errorCode
+     * @param mixed $errorParameter
      * @return string|null
      */
-    public function resolve($errorSlug)
+    public function resolve($errorSlug, $errorParameter)
     {
         if (key_exists($errorSlug, $this->messages)) {
             return $this->messages[$errorSlug];
         }
 
         if ($this->translator->has($errorSlug = "errors.$errorSlug")) {
-            return $this->translator->trans($errorSlug);
+            $messageResolver = $this->translator->trans($errorSlug);
+            if (isset($messageResolver['message'])) {
+                $message = $messageResolver['message'];
+
+                if (preg_match_all("/{{(.*?)}}/", $message, $m)) {
+
+                    foreach ($m[1] as $i => $varname) {
+                        $message = str_replace($m[0][$i], sprintf('%s', $errorParameter[$varname] ?? $varname), $message);
+                    }
+                }
+                $messageResolver['message'] = $message;
+            }
+            return $messageResolver;
         }
 
         return null;

@@ -51,16 +51,17 @@ class Responder implements ResponderContract
      * @param mixed|null $errorSlug
      * @param mixed|null $errorCode
      * @param string|null $message
+     *  @param mixed|null $errorParameter
      * @return \Offspring\Responder\Http\Responses\ErrorResponseBuilder
      */
-    public function error($errorSlug = null, $errorCode = null, $message = null): ErrorResponseBuilder
+    public function error($errorSlug = null, $errorCode = null, $message = null, $errorParameter = []): ErrorResponseBuilder
     {
         //array to string
         if (is_array($message)) {
             $message = $this->implodeMessageBag($message);
         }
 
-        return $this->errorResponseBuilder->error($errorSlug, $errorCode, $message);
+        return $this->errorResponseBuilder->error($errorSlug, $errorCode, $message, $errorParameter);
     }
 
     protected function implodeMessageBag(array $messages = [])
