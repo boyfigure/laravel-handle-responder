@@ -9,5 +9,5 @@ interface Responder
     public function success($data = null);
 
 
-    public function error($errorSlug = null, $errorCode = null, $message = null);
+    public function error($errorSlug = null, $errorCode = null, $message = null, $errorParameter = []);
 }
