@@ -53,21 +53,13 @@ class ErrorFactory implements ErrorFactoryContract
             }
         }
         if (isset($traceId)) {
-            $this->saveLog($traceId, $exception, $errorSlug, $errorCode, $message, $data);
+            capture_error_log($exception, $traceId, [
+                'error_code' => $errorCode,
+                'error_message' => $message,
+                'error_slug' => $errorSlug,
+                'data' => $data
+            ]);
         }
         return $serializer->format($errorSlug, $errorCode, $message, $data, $traceId);
-    }
-
-    public function saveLog($traceId, $exception, $errorSlug, $errorCode, $message, $data)
-    {
-        $exception['error_trace_id'] = $traceId;
-        $exception['error_code'] = $errorCode;
-        $exception['error_message'] = $message;
-        $exception['error_slug'] = $errorSlug;
-        $exception['data'] = $data;
-
-        Log::debug($exception);
-
-        return true;
     }
 }

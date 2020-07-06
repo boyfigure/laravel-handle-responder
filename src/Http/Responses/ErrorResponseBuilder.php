@@ -9,7 +9,6 @@ use Offspring\Responder\Exceptions\InvalidErrorSerializerException;
 use InvalidArgumentException;
 
 
-
 class ErrorResponseBuilder extends ResponseBuilder
 {
     /**
@@ -99,7 +98,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      * @param mixed|null $errorParameter
      * @return $this
      */
-    public function error($errorSlug = null, $errorCode = null, $message = null, $errorParameter =[])
+    public function error($errorSlug = null, $errorCode = null, $message = null, $errorParameter = [])
     {
         $this->errorSlug = $errorSlug;
         $this->errorCode = $errorCode;
@@ -124,22 +123,9 @@ class ErrorResponseBuilder extends ResponseBuilder
     public function log($exception)
     {
         $this->traceId = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, config('responder.length_error_tracking_id'));
-        if ($exception instanceof \Exception) {
-            $this->exception = [
-                'system_error_message' => $exception->getMessage(),
-                'system_error_code' => $exception->getCode(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTraceAsString(),
-            ];
-        } else {
-            $this->exception = [
-                'trace' => $exception,
-            ];
-        }
+        $this->exception = $exception;
         return $this;
     }
-
 
     /**
      * Set the error serializer.
@@ -170,7 +156,7 @@ class ErrorResponseBuilder extends ResponseBuilder
      */
     protected function getOutput(): array
     {
-        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId, $this->exception,$this->errorParameter);
+        return $this->errorFactory->make($this->serializer, $this->errorSlug, $this->errorCode, $this->message, $this->data, $this->traceId, $this->exception, $this->errorParameter);
     }
 
     /**
